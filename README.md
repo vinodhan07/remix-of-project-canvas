@@ -1,73 +1,75 @@
-# Welcome to your Lovable project
+# 🌍 Globe Trotter
+> **Empowering Personalized Travel Planning**
 
-## Project info
+## 📖 About
+**Globe Trotter** is a personalized, intelligent, and collaborative platform designed to transform the way individuals plan and experience travel. Our goal is to empower users to dream, design, and organize trips with ease by offering an end-to-end travel planning tool that combines flexibility and interactivity.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+This project envisions a world where users can explore global destinations, visualize their journeys through structured itineraries, make cost-effective decisions, and share their travel plans with a community.
 
-## How can I edit this code?
+## 🚀 Mission
+To build a user-centric, responsive application that simplifies the complexity of planning multi-city travel. The platform provides travelers with intuitive tools to:
+* Add and manage travel stops and durations.
+* Explore cities and activities of interest.
+* Estimate trip budgets automatically.
+* Visualize timelines and plans.
+* Share trip plans with others.
 
-There are several ways of editing your application.
+## 🛠 Features
+The application is designed with a responsive frontend and a robust relational database to support the following core features:
 
-**Use Lovable**
+### 👤 User Management
+* **Login/Signup:** Secure authentication to create and access personal travel plans.
+* **User Profile:** Manage personal data, preferences, and saved destinations.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### ✈️ Trip Planning
+* **Dashboard:** A central hub showing upcoming trips, popular cities, and inspiration.
+* **Create Trip:** Initiate new trips with names, dates, and cover photos.
+* **My Trips:** A list view of all created trips with options to edit or view details.
 
-Changes made via Lovable will be committed automatically to this repo.
+### 📍 Itinerary & Discovery
+* **Itinerary Builder:** Interactive tool to add cities, dates, and assign activities for each stop.
+* **City Search:** Discover cities with meta-info (cost index, popularity) and add them to your trip.
+* **Activity Search:** Browse things to do (sightseeing, food, adventure) and add them to specific stops.
+* **Itinerary View:** Visual representation of the trip in a day-wise layout or city groupings.
+* **Trip Calendar:** A timeline view to visualize the journey flow and reorder activities.
 
-**Use your preferred IDE**
+### 💰 Budget & Finance
+* **Budget Breakdown:** Summarized financial view tracking costs for transport, stays, activities, and meals.
+* **Cost Alerts:** Visual breakdowns (pie/bar charts) and alerts for over-budget days.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 🤝 Collaboration & Sharing
+* **Shared Itinerary:** Generate public URLs to share read-only versions of itineraries with friends or social media.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### ⚙️ Admin (Optional)
+* **Analytics Dashboard:** Admin interface to track user trends, popular cities, and platform usage stats.
 
-Follow these steps:
+## 🎨 Design Mockups
+You can view the initial wireframes and design concepts here:
+[**View Excalidraw Mockups**](https://link.excalidraw.com/I/65VNwvy7c4X/6CzbTgEeSr1)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 💻 Tech Stack
+* **Frontend:** (e.g., React, Vue, HTML/CSS)
+* **Backend:** (e.g., Node.js, Python/Django)
+* **Database:** Relational Database (SQL) for storing user itineraries and complex travel data.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## 🔧 Installation & Setup
+1.  **Clone the repo:**
+    ```bash
+    git clone [https://github.com/YOUR_USERNAME/GlobeTrotter.git](https://github.com/YOUR_USERNAME/GlobeTrotter.git)
+    ```
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Run the application:**
+    ```bash
+    npm start
+    ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 👥 Contributors
+* **Team Member 1**
+* **Team Member 2**
+* **Team Member 3**
+* **Faculty Guide**
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+---
