@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plane, Mail, Lock, Eye, EyeOff, User, Loader2 } from "lucide-react";
+import { Plane, Mail, Lock, Eye, EyeOff, User, Loader2, CheckCircle2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
@@ -25,8 +25,10 @@ const Signup = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string }>({});
+  const [emailSent, setEmailSent] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState("");
 
-  const { signUp, user, loading } = useAuth();
+  const { signUp, user, loading, resendVerificationEmail } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -69,11 +71,27 @@ const Signup = () => {
         description: message,
       });
     } else {
+      setSubmittedEmail(formData.email);
+      setEmailSent(true);
+    }
+  };
+
+  const handleResendEmail = async () => {
+    setIsSubmitting(true);
+    const { error } = await resendVerificationEmail(submittedEmail);
+    setIsSubmitting(false);
+
+    if (error) {
       toast({
-        title: "Account Created!",
-        description: "Welcome to GlobeTrotter! Let's start planning.",
+        variant: "destructive",
+        title: "Failed to resend",
+        description: "Could not resend verification email. Please try again.",
       });
-      navigate("/dashboard");
+    } else {
+      toast({
+        title: "Email Sent!",
+        description: "A new verification email has been sent.",
+      });
     }
   };
 
@@ -81,6 +99,62 @@ const Signup = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  // Show email verification message after signup
+  if (emailSent) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        
+        <main className="pt-24 pb-16">
+          <div className="container mx-auto px-4">
+            <div className="max-w-md mx-auto">
+              <div className="bg-card rounded-2xl border border-border p-8 shadow-lg text-center">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle2 className="w-8 h-8 text-primary" />
+                </div>
+                <h1 className="font-display text-2xl font-bold text-foreground mb-3">
+                  Check Your Email
+                </h1>
+                <p className="text-muted-foreground mb-6">
+                  We've sent a verification link to{" "}
+                  <span className="font-semibold text-foreground">{submittedEmail}</span>.
+                  Click the link to verify your account.
+                </p>
+                <div className="space-y-4">
+                  <p className="text-sm text-muted-foreground">
+                    Didn't receive the email? Check your spam folder or
+                  </p>
+                  <Button
+                    variant="outline"
+                    onClick={handleResendEmail}
+                    disabled={isSubmitting}
+                    className="w-full"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      "Resend Verification Email"
+                    )}
+                  </Button>
+                  <Link to="/login">
+                    <Button variant="ghost" className="w-full">
+                      Back to Sign In
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <Footer />
       </div>
     );
   }
