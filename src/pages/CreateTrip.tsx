@@ -41,7 +41,6 @@ const CreateTrip = () => {
         name: formData.name,
         start_date: formData.startDate,
         end_date: formData.endDate,
-        budget_limit: 0,
       };
 
       // Only add description if it exists in the form and we assume it might be in the schema
