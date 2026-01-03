@@ -81,7 +81,7 @@ const CITY_COORDINATES: Record<string, [number, number]> = {
 const CITY_IMAGES: Record<string, string> = {
   "Paris": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800",
   "Eiffel Tower": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800",
-  "Louvre Museum": "https://images.unsplash.com/photo-1565099824688-e9d640f5d3bf?w=800",
+  "Louvre Museum": "/images/louvre-new.jpg",
   "London": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800",
   "New York": "https://images.unsplash.com/photo-1496442226666-8d4a0e94f389?w=800",
   "Tokyo": "https://images.unsplash.com/photo-1503899036084-c55cdd920a26?w=800",
