@@ -99,10 +99,10 @@ const Trips = () => {
             ].map((option) => (
               <button
                 key={option.value}
-                onClick={() => setFilter(option.value as any)}
+                onClick={() => setFilter(option.value as "all" | "upcoming" | "planning")}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filter === option.value
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
                   }`}
               >
                 {option.label}
@@ -126,8 +126,8 @@ const Trips = () => {
                   />
                   <div className="absolute top-3 right-3">
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${trip.status === "upcoming"
-                        ? "bg-palm text-primary-foreground"
-                        : "bg-accent text-accent-foreground"
+                      ? "bg-palm text-primary-foreground"
+                      : "bg-accent text-accent-foreground"
                       }`}>
                       {trip.status === "upcoming" ? "Upcoming" : "Planning"}
                     </span>

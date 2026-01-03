@@ -127,14 +127,21 @@ function TransportBlock({ from, to }: { from?: Activity | string, to: Activity |
   );
 }
 
+interface SortableStopProps {
+  stop: Stop;
+  expanded: boolean;
+  onToggle: () => void;
+  onAddActivity: (activity: Omit<Activity, "id">) => void;
+  onDeleteActivity: (id: string) => void;
+}
+
 function SortableStop({
   stop,
   expanded,
   onToggle,
-  onDelete,
   onAddActivity,
   onDeleteActivity,
-}: any) {
+}: SortableStopProps) {
   const {
     attributes,
     listeners,
@@ -284,7 +291,7 @@ const ItineraryBuilder = () => {
     setExpandedStops(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
   };
 
-  const addActivity = (stopId: string, activity: any) => {
+  const addActivity = (stopId: string, activity: Omit<Activity, "id">) => {
     setStops(prev => prev.map(s => s.id === stopId ? { ...s, activities: [...s.activities, { ...activity, id: `act-${Date.now()}` }] } : s));
   };
 
@@ -314,7 +321,7 @@ const ItineraryBuilder = () => {
                   stop={stop}
                   expanded={expandedStops.includes(stop.id)}
                   onToggle={() => toggleStop(stop.id)}
-                  onAddActivity={(a: any) => addActivity(stop.id, a)}
+                  onAddActivity={(a: Omit<Activity, "id">) => addActivity(stop.id, a)}
                   onDeleteActivity={(bid: string) => deleteActivity(stop.id, bid)}
                 />
               ))}
