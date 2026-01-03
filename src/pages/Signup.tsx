@@ -1,11 +1,20 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plane, Mail, Lock, Eye, EyeOff, User } from "lucide-react";
+import { Plane, Mail, Lock, Eye, EyeOff, User, Loader2 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
+
+const signupSchema = z.object({
+  name: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name is too long"),
+  email: z.string().trim().email("Invalid email address").max(255, "Email is too long"),
+  password: z.string().min(6, "Password must be at least 6 characters").max(72, "Password is too long"),
+});
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,11 +23,67 @@ const Signup = () => {
     email: "",
     password: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string }>({});
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { signUp, user, loading } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (!loading && user) {
+      navigate("/dashboard");
+    }
+  }, [user, loading, navigate]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Signup:", formData);
+    setErrors({});
+
+    const validation = signupSchema.safeParse(formData);
+    if (!validation.success) {
+      const fieldErrors: { name?: string; email?: string; password?: string } = {};
+      validation.error.errors.forEach((err) => {
+        if (err.path[0] === "name") fieldErrors.name = err.message;
+        if (err.path[0] === "email") fieldErrors.email = err.message;
+        if (err.path[0] === "password") fieldErrors.password = err.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+
+    setIsSubmitting(true);
+    const { error } = await signUp(formData.email, formData.password, formData.name);
+    setIsSubmitting(false);
+
+    if (error) {
+      let message = "Failed to create account. Please try again.";
+      if (error.message.includes("User already registered")) {
+        message = "An account with this email already exists. Try signing in instead.";
+      } else if (error.message.includes("Password")) {
+        message = error.message;
+      }
+      toast({
+        variant: "destructive",
+        title: "Sign Up Failed",
+        description: message,
+      });
+    } else {
+      toast({
+        title: "Account Created!",
+        description: "Welcome to GlobeTrotter! Let's start planning.",
+      });
+      navigate("/dashboard");
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -53,10 +118,11 @@ const Signup = () => {
                       placeholder="John Doe"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="pl-10"
+                      className={`pl-10 ${errors.name ? 'border-destructive' : ''}`}
                       required
                     />
                   </div>
+                  {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
                 </div>
 
                 <div className="space-y-2">
@@ -69,10 +135,11 @@ const Signup = () => {
                       placeholder="you@example.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="pl-10"
+                      className={`pl-10 ${errors.email ? 'border-destructive' : ''}`}
                       required
                     />
                   </div>
+                  {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
                 </div>
 
                 <div className="space-y-2">
@@ -85,7 +152,7 @@ const Signup = () => {
                       placeholder="Create a strong password"
                       value={formData.password}
                       onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      className="pl-10 pr-10"
+                      className={`pl-10 pr-10 ${errors.password ? 'border-destructive' : ''}`}
                       required
                     />
                     <button
@@ -96,10 +163,18 @@ const Signup = () => {
                       {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
+                  {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
                 </div>
 
-                <Button type="submit" variant="ocean" size="lg" className="w-full">
-                  Create Account
+                <Button type="submit" variant="ocean" size="lg" className="w-full" disabled={isSubmitting}>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Creating Account...
+                    </>
+                  ) : (
+                    "Create Account"
+                  )}
                 </Button>
               </form>
 
