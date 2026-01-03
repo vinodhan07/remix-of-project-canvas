@@ -173,7 +173,7 @@ const Trips = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <Wallet className="w-4 h-4" />
-                      <span>Budget: ${trip.budget.toLocaleString()}</span>
+                      <span>Budget: ₹{trip.budget.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>

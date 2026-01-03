@@ -128,7 +128,7 @@ const TripDetail = () => {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Budget</p>
-                <p className="font-semibold text-foreground">${tripData.budget.toLocaleString()}</p>
+                <p className="font-semibold text-foreground">₹{tripData.budget.toLocaleString()}</p>
               </div>
             </div>
           </div>
@@ -255,7 +255,7 @@ const TripDetail = () => {
               </div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-muted-foreground">
-                  ${tripData.spent.toLocaleString()} spent of ${tripData.budget.toLocaleString()}
+                  ₹{tripData.spent.toLocaleString()} spent of ₹{tripData.budget.toLocaleString()}
                 </span>
                 <span className="font-semibold text-foreground">
                   {((tripData.spent / tripData.budget) * 100).toFixed(0)}%
@@ -268,7 +268,7 @@ const TripDetail = () => {
                 />
               </div>
               <p className="text-sm text-palm mt-2">
-                ${(tripData.budget - tripData.spent).toLocaleString()} remaining
+                ₹{(tripData.budget - tripData.spent).toLocaleString()} remaining
               </p>
             </div>
 

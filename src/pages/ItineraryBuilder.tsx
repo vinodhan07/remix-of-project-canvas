@@ -121,7 +121,7 @@ function TransportBlock({ from, to }: { from?: Activity | string, to: Activity |
       <div className="absolute left-[28px] top-0 bottom-0 w-0.5 bg-border -z-10 border-l border-dashed border-muted-foreground/50"></div>
       <div className="bg-muted text-muted-foreground text-xs px-3 py-1 rounded-full flex items-center gap-2 border border-border">
         <Bus className="w-3 h-3" />
-        <span>{mode} • {time} • ${cost}</span>
+        <span>{mode} • {time} • ₹{cost}</span>
       </div>
     </div>
   );
@@ -212,7 +212,7 @@ function SortableStop({
                   <div className="flex-1 bg-background border border-border p-3 rounded-xl hover:border-primary/50 transition-colors mb-2">
                     <div className="flex justify-between">
                       <span className="font-semibold text-sm">{act.title}</span>
-                      <span className="text-xs font-mono">${act.cost}</span>
+                      <span className="text-xs font-mono">₹{act.cost}</span>
                     </div>
                     {/* Mock Peak Hour Warning if time is between 5PM - 7PM (17:00 - 19:00) */}
                     {(parseInt(act.time.split(':')[0]) >= 17 && parseInt(act.time.split(':')[0]) <= 19) && (
@@ -346,11 +346,11 @@ const ItineraryBuilder = () => {
           <div className="bg-background rounded-xl p-4 border border-border shadow-sm">
             <div className="flex justify-between mb-2 text-sm">
               <span className="text-muted-foreground">Total Budget</span>
-              <span className="font-mono">${USER_PREFS.budget_limit}</span>
+              <span className="font-mono">₹{USER_PREFS.budget_limit}</span>
             </div>
             <div className="flex justify-between mb-4 text-2xl font-bold">
               <span className={isOverBudget ? "text-destructive" : "text-primary"}>
-                ${totalCost}
+                ₹{totalCost}
               </span>
               {isOverBudget && <AlertTriangle className="w-6 h-6 text-destructive animate-pulse" />}
             </div>
@@ -360,21 +360,21 @@ const ItineraryBuilder = () => {
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="flex items-center gap-2"><MapPin className="w-3 h-3" /> Stay</span>
-                <span>${stayCost}</span>
+                <span>₹{stayCost}</span>
               </div>
               <div className="flex justify-between">
                 <span className="flex items-center gap-2"><Bus className="w-3 h-3" /> Transport</span>
-                <span>${transportCost}</span>
+                <span>₹{transportCost}</span>
               </div>
               <div className="flex justify-between">
                 <span className="flex items-center gap-2"><Clock className="w-3 h-3" /> Activities</span>
-                <span>${activitiesCost}</span>
+                <span>₹{activitiesCost}</span>
               </div>
             </div>
 
             {isOverBudget && (
               <div className="mt-4 p-2 bg-destructive/10 text-destructive text-xs rounded border border-destructive/20">
-                You are ${totalCost - USER_PREFS.budget_limit} over budget! Consider removing some paid activities.
+                You are ₹{totalCost - USER_PREFS.budget_limit} over budget! Consider removing some paid activities.
               </div>
             )}
           </div>
@@ -398,7 +398,7 @@ const ItineraryBuilder = () => {
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground mb-1">Near Gare du Nord</p>
-                    <div className="font-bold text-primary">$85/night</div>
+                    <div className="font-bold text-primary">₹85/night</div>
                   </div>
                 </div>
                 <Button size="sm" variant="outline" className="w-full mt-2 text-xs">View Deal</Button>
@@ -421,7 +421,7 @@ const ItineraryBuilder = () => {
                   <div>
                     <p className="font-medium text-sm">Le Potager</p>
                     <p className="text-xs text-muted-foreground mb-1">Vegetarian • 0.5km away</p>
-                    <div className="text-xs font-bold">$25-40</div>
+                    <div className="text-xs font-bold">₹25-40</div>
                   </div>
                 </div>
               </CardContent>

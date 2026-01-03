@@ -30,7 +30,7 @@ const budgetData = {
 const TripBudget = () => {
   const { id } = useParams();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  
+
   const remaining = budgetData.totalBudget - budgetData.spent;
   const percentUsed = (budgetData.spent / budgetData.totalBudget) * 100;
   const dailyAverage = budgetData.dailySpending.reduce((a, b) => a + b.amount, 0) / budgetData.dailySpending.length;
@@ -39,7 +39,7 @@ const TripBudget = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
+
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4">
           {/* Back Button */}
@@ -76,9 +76,9 @@ const TripBudget = () => {
                 </div>
                 <span className="text-sm text-muted-foreground">Total Budget</span>
               </div>
-              <p className="text-2xl font-bold text-foreground">${budgetData.totalBudget.toLocaleString()}</p>
+              <p className="text-2xl font-bold text-foreground">₹{budgetData.totalBudget.toLocaleString()}</p>
             </div>
-            
+
             <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
@@ -86,10 +86,10 @@ const TripBudget = () => {
                 </div>
                 <span className="text-sm text-muted-foreground">Spent</span>
               </div>
-              <p className="text-2xl font-bold text-foreground">${budgetData.spent.toLocaleString()}</p>
+              <p className="text-2xl font-bold text-foreground">₹{budgetData.spent.toLocaleString()}</p>
               <p className="text-sm text-muted-foreground mt-1">{percentUsed.toFixed(0)}% of budget</p>
             </div>
-            
+
             <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-xl bg-palm/10 flex items-center justify-center">
@@ -98,10 +98,10 @@ const TripBudget = () => {
                 <span className="text-sm text-muted-foreground">Remaining</span>
               </div>
               <p className={`text-2xl font-bold ${remaining > 0 ? "text-palm" : "text-destructive"}`}>
-                ${remaining.toLocaleString()}
+                ₹{remaining.toLocaleString()}
               </p>
             </div>
-            
+
             <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-xl bg-destructive/10 flex items-center justify-center">
@@ -134,8 +134,8 @@ const TripBudget = () => {
                       onClick={(data) => setSelectedCategory(data.name)}
                     >
                       {budgetData.categories.map((entry, index) => (
-                        <Cell 
-                          key={`cell-${index}`} 
+                        <Cell
+                          key={`cell-${index}`}
                           fill={entry.color}
                           stroke={selectedCategory === entry.name ? "hsl(220, 25%, 15%)" : "transparent"}
                           strokeWidth={2}
@@ -143,8 +143,8 @@ const TripBudget = () => {
                         />
                       ))}
                     </Pie>
-                    <Tooltip 
-                      formatter={(value: number) => [`$${value.toLocaleString()}`, "Amount"]}
+                    <Tooltip
+                      formatter={(value: number) => [`₹${value.toLocaleString()}`, "Amount"]}
                       contentStyle={{
                         backgroundColor: "hsl(0, 0%, 100%)",
                         border: "1px solid hsl(220, 15%, 88%)",
@@ -152,7 +152,7 @@ const TripBudget = () => {
                         padding: "12px",
                       }}
                     />
-                    <Legend 
+                    <Legend
                       verticalAlign="bottom"
                       formatter={(value) => <span className="text-foreground">{value}</span>}
                     />
@@ -170,18 +170,17 @@ const TripBudget = () => {
                 {budgetData.categories.map((category) => {
                   const percentage = (category.value / budgetData.spent) * 100;
                   return (
-                    <div 
+                    <div
                       key={category.name}
-                      className={`p-4 rounded-xl border transition-all cursor-pointer ${
-                        selectedCategory === category.name 
-                          ? "border-primary bg-primary/5" 
+                      className={`p-4 rounded-xl border transition-all cursor-pointer ${selectedCategory === category.name
+                          ? "border-primary bg-primary/5"
                           : "border-border hover:border-primary/30"
-                      }`}
+                        }`}
                       onClick={() => setSelectedCategory(selectedCategory === category.name ? null : category.name)}
                     >
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-3">
-                          <div 
+                          <div
                             className="w-10 h-10 rounded-xl flex items-center justify-center"
                             style={{ backgroundColor: `${category.color}20` }}
                           >
@@ -192,10 +191,10 @@ const TripBudget = () => {
                             <p className="text-sm text-muted-foreground">{percentage.toFixed(0)}% of total</p>
                           </div>
                         </div>
-                        <p className="text-lg font-bold text-foreground">${category.value.toLocaleString()}</p>
+                        <p className="text-lg font-bold text-foreground">₹{category.value.toLocaleString()}</p>
                       </div>
                       <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                        <div 
+                        <div
                           className="h-full rounded-full transition-all"
                           style={{ width: `${percentage}%`, backgroundColor: category.color }}
                         />
@@ -224,41 +223,40 @@ const TripBudget = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
               {budgetData.dailySpending.map((day, index) => (
-                <div 
+                <div
                   key={index}
-                  className={`p-4 rounded-xl border text-center transition-all hover:shadow-md ${
-                    day.alert 
-                      ? "border-destructive/30 bg-destructive/5" 
+                  className={`p-4 rounded-xl border text-center transition-all hover:shadow-md ${day.alert
+                      ? "border-destructive/30 bg-destructive/5"
                       : "border-border hover:border-palm/30"
-                  }`}
+                    }`}
                 >
                   <p className="text-xs text-muted-foreground mb-1">{day.date}</p>
                   <p className="font-semibold text-foreground text-sm mb-2">{day.day}</p>
                   <p className={`text-lg font-bold ${day.alert ? "text-destructive" : "text-palm"}`}>
-                    ${day.amount}
+                    ₹{day.amount}
                   </p>
                   {day.alert && (
                     <div className="flex items-center justify-center gap-1 mt-2 text-destructive">
                       <AlertTriangle className="w-3 h-3" />
-                      <span className="text-xs">+${day.amount - day.budget}</span>
+                      <span className="text-xs">+₹{day.amount - day.budget}</span>
                     </div>
                   )}
                 </div>
               ))}
             </div>
-            
+
             <div className="mt-6 p-4 rounded-xl bg-muted/50 flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Daily Budget Target</p>
-                <p className="font-semibold text-foreground">$350 / day</p>
+                <p className="font-semibold text-foreground">₹350 / day</p>
               </div>
               <div className="text-right">
                 <p className="text-sm text-muted-foreground">Average Daily Spending</p>
                 <p className={`font-semibold ${dailyAverage > 350 ? "text-destructive" : "text-palm"}`}>
-                  ${dailyAverage.toFixed(0)} / day
+                  ₹{dailyAverage.toFixed(0)} / day
                 </p>
               </div>
             </div>

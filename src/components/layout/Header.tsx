@@ -28,7 +28,7 @@ const Header = () => {
               <Plane className="w-5 h-5 text-primary-foreground rotate-[-30deg]" />
             </div>
             <span className="font-display text-xl font-bold text-foreground">
-              Globe<span className="text-accent">Trotter</span>
+              Globe<span className="text-primary">Trotter</span>
             </span>
           </Link>
 
@@ -39,8 +39,8 @@ const Header = () => {
                 key={link.path}
                 to={link.path}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${isActive(link.path)
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  ? "bg-primary/10 text-primary"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
                   }`}
               >
                 {link.label}
@@ -99,8 +99,8 @@ const Header = () => {
                 to={link.path}
                 onClick={() => setIsMenuOpen(false)}
                 className={`px-4 py-3 rounded-lg font-medium transition-colors ${isActive(link.path)
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  ? "bg-primary/10 text-primary"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
                   }`}
               >
                 {link.label}

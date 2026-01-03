@@ -148,7 +148,7 @@ const Explore = () => {
                         {selectedLocation.rating}
                       </div>
                     </div>
-                    <span className="font-semibold text-sm">${selectedLocation.cost}</span>
+                    <span className="font-semibold text-sm">₹{selectedLocation.cost}</span>
                   </div>
                   <div className="flex gap-2 mt-3">
                     <Button size="sm" className="w-full text-xs" onClick={() => console.log("Add to itinerary")}>
@@ -190,7 +190,7 @@ const Explore = () => {
                   {loc.is_visited ? "Visited" : loc.is_must_see ? "Must See" : "Recommended"}
                 </p>
                 <div className="flex items-center gap-1 mt-2 text-xs font-medium">
-                  <span className="text-primary">${loc.cost}</span>
+                  <span className="text-primary">₹{loc.cost}</span>
                   <span className="text-muted-foreground mx-1">•</span>
                   <span>{loc.rating}</span>
                 </div>

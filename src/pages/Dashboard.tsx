@@ -68,7 +68,7 @@ const Dashboard = () => {
             {[
               { label: "Total Trips", value: "12", icon: MapPin, color: "from-primary to-ocean-light" },
               { label: "Destinations", value: "28", icon: Calendar, color: "from-accent to-coral" },
-              { label: "Budget Saved", value: "$2,340", icon: Wallet, color: "from-palm to-palm" },
+              { label: "Budget Saved", value: "₹2,340", icon: Wallet, color: "from-palm to-palm" },
             ].map((stat, index) => (
               <div key={index} className="bg-card rounded-2xl border border-border p-6 shadow-sm hover:shadow-md transition-shadow">
                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center mb-4`}>
@@ -112,8 +112,8 @@ const Dashboard = () => {
                           {trip.name}
                         </h3>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${trip.status === "upcoming"
-                            ? "bg-palm/10 text-palm"
-                            : "bg-accent/10 text-accent"
+                          ? "bg-palm/10 text-palm"
+                          : "bg-accent/10 text-accent"
                           }`}>
                           {trip.status === "upcoming" ? "Upcoming" : "Planning"}
                         </span>
@@ -129,7 +129,7 @@ const Dashboard = () => {
                         </span>
                         <span className="flex items-center gap-1">
                           <Wallet className="w-4 h-4" />
-                          ${trip.budget.toLocaleString()}
+                          ₹{trip.budget.toLocaleString()}
                         </span>
                       </div>
                     </div>
