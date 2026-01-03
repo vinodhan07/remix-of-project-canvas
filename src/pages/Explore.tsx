@@ -1,135 +1,204 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import Map, { Marker, Popup, NavigationControl } from "react-map-gl/mapbox";
 import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Search, MapPin, Star, DollarSign, Filter } from "lucide-react";
-import destParis from "@/assets/dest-paris.jpg";
-import destTokyo from "@/assets/dest-tokyo.jpg";
-import destBali from "@/assets/dest-bali.jpg";
-import destSantorini from "@/assets/dest-santorini.jpg";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { MapPin, Star, Plus, Navigation } from "lucide-react";
+import "mapbox-gl/dist/mapbox-gl.css";
+import { useTheme } from "next-themes";
 
-const allDestinations = [
-  { id: 1, name: "Paris", country: "France", region: "Europe", rating: 4.9, costIndex: "$$$", image: destParis, description: "City of lights, romance, and incredible cuisine." },
-  { id: 2, name: "Tokyo", country: "Japan", region: "Asia", rating: 4.8, costIndex: "$$", image: destTokyo, description: "Where ancient tradition meets futuristic innovation." },
-  { id: 3, name: "Bali", country: "Indonesia", region: "Asia", rating: 4.7, costIndex: "$", image: destBali, description: "Tropical paradise with spiritual retreats and beaches." },
-  { id: 4, name: "Santorini", country: "Greece", region: "Europe", rating: 4.9, costIndex: "$$$", image: destSantorini, description: "Stunning sunsets over the Aegean Sea." },
-  { id: 5, name: "New York", country: "USA", region: "North America", rating: 4.6, costIndex: "$$$", image: destParis, description: "The city that never sleeps." },
-  { id: 6, name: "Sydney", country: "Australia", region: "Oceania", rating: 4.7, costIndex: "$$", image: destSantorini, description: "Iconic harbor, beaches, and outdoor lifestyle." },
+// Mock Data matching the Schema structure for visualization
+const MOCK_LOCATIONS = [
+  {
+    id: "1",
+    title: "Eiffel Tower",
+    lat: 48.8584,
+    lng: 2.2945,
+    is_must_see: true,
+    is_visited: false,
+    cost: 35,
+    rating: 4.8,
+    image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800"
+  },
+  {
+    id: "2",
+    title: "Louvre Museum",
+    lat: 48.8606,
+    lng: 2.3376,
+    is_must_see: true,
+    is_visited: true,
+    cost: 22,
+    rating: 4.9,
+    image: "https://images.unsplash.com/photo-1499856871940-a09627c6dcf6?w=800"
+  },
+  {
+    id: "3",
+    title: "Montmartre",
+    lat: 48.8872,
+    lng: 2.3429,
+    is_must_see: false,
+    is_visited: false, // Unvisited spot -> Blue
+    cost: 0,
+    rating: 4.7,
+    image: "https://images.unsplash.com/photo-1550340499-a6c6030e6953?w=800"
+  },
+  {
+    id: "4",
+    title: "Le Marais",
+    lat: 48.8575,
+    lng: 2.3582,
+    is_must_see: false,
+    is_visited: false,
+    cost: 0,
+    rating: 4.6,
+    image: "https://images.unsplash.com/photo-1509439649568-d0554157d6e4?w=800"
+  }
 ];
 
-const regions = ["All", "Europe", "Asia", "North America", "Oceania"];
-
 const Explore = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedRegion, setSelectedRegion] = useState("All");
-
-  const filteredDestinations = allDestinations.filter((dest) => {
-    const matchesSearch = dest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      dest.country.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesRegion = selectedRegion === "All" || dest.region === selectedRegion;
-    return matchesSearch && matchesRegion;
+  // Default to Paris
+  const [viewState, setViewState] = useState({
+    latitude: 48.8566,
+    longitude: 2.3522,
+    zoom: 12
   });
+  const [selectedLocation, setSelectedLocation] = useState<typeof MOCK_LOCATIONS[0] | null>(null);
+  const { theme } = useTheme();
+
+  // In a real app, this should be an env variable
+  const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || "pk.eyJ1IjoiZXhhbXcGxlIiwiYSI6ImNrN...key_here";
+
+  // If no token is present, we might want to show a warning or fallback, 
+  // but for the prompt's request we build the UI assuming it works or will work.
+  const hasToken = MAPBOX_TOKEN && !MAPBOX_TOKEN.includes("key_here");
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      
-      <main className="pt-24 pb-16">
-        <div className="container mx-auto px-4">
-          {/* Header */}
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Explore <span className="text-accent">Destinations</span>
-            </h1>
-            <p className="text-muted-foreground">
-              Discover amazing cities around the world and add them to your next adventure
-            </p>
-          </div>
-
-          {/* Search & Filters */}
-          <div className="flex flex-col md:flex-row gap-4 mb-8">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-              <Input
-                placeholder="Search cities or countries..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0">
-              {regions.map((region) => (
-                <button
-                  key={region}
-                  onClick={() => setSelectedRegion(region)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                    selectedRegion === region
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground hover:bg-muted/80"
-                  }`}
-                >
-                  {region}
-                </button>
-              ))}
+    <div className="h-[calc(100vh-4rem)] w-full flex flex-col md:flex-row relative bg-background overflow-hidden rounded-tl-2xl">
+      {/* Map Container */}
+      <div className="flex-1 h-full relative">
+        {!hasToken && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-6 text-center">
+            <div className="max-w-md">
+              <h2 className="text-xl font-bold mb-2">Mapbox Token Required</h2>
+              <p className="text-muted-foreground mb-4">Please add VITE_MAPBOX_TOKEN to your .env file to enable the interactive map.</p>
+              <Button variant="outline" onClick={() => window.open('https://mapbox.com', '_blank')}>Get Mapbox Token</Button>
             </div>
           </div>
+        )}
 
-          {/* Destinations Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredDestinations.map((dest) => (
+        <Map
+          {...viewState}
+          onMove={evt => setViewState(evt.viewState)}
+          style={{ width: '100%', height: '100%' }}
+          mapStyle={theme === 'dark' ? "mapbox://styles/mapbox/dark-v11" : "mapbox://styles/mapbox/streets-v12"}
+          mapboxAccessToken={MAPBOX_TOKEN}
+        >
+          <NavigationControl position="bottom-right" />
+
+          {MOCK_LOCATIONS.map((loc) => (
+            <Marker key={loc.id} latitude={loc.lat} longitude={loc.lng} anchor="bottom">
               <div
-                key={dest.id}
-                className="bg-card rounded-2xl border border-border overflow-hidden shadow-sm hover:shadow-lg hover:border-primary/30 transition-all group"
+                className="cursor-pointer transition-transform hover:scale-110"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedLocation(loc);
+                }}
               >
-                {/* Image */}
-                <div className="relative h-48">
-                  <img
-                    src={dest.image}
-                    alt={dest.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3 flex gap-2">
-                    <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-card/90 backdrop-blur-sm text-xs font-medium">
-                      <Star className="w-3 h-3 text-sunset fill-sunset" />
-                      {dest.rating}
-                    </span>
-                    <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-card/90 backdrop-blur-sm text-xs font-medium text-palm">
-                      {dest.costIndex}
-                    </span>
-                  </div>
-                </div>
+                {/* 
+                  'Must-See' landmarks are Gold (is_must_see)
+                  'Unvisited' spots (based on is_visited) are Blue
+                  If visited, maybe green or gray? Prompt only specified Gold/Blue distinction.
+                  We'll stick to Gold for Must-See, Blue for Unvisited( && !Must-See), and maybe Gray/Check for Visited.
+                */}
+                <MapPin
+                  className={`w-8 h-8 drop-shadow-lg ${loc.is_must_see
+                    ? "text-yellow-500 fill-yellow-500 animate-bounce"
+                    : loc.is_visited
+                      ? "text-green-500 fill-green-500"
+                      : "text-blue-500 fill-blue-500"
+                    }`}
+                />
+              </div>
+            </Marker>
+          ))}
 
-                {/* Content */}
-                <div className="p-5">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                    <MapPin className="w-4 h-4" />
-                    <span>{dest.country} • {dest.region}</span>
+          {selectedLocation && (
+            <Popup
+              latitude={selectedLocation.lat}
+              longitude={selectedLocation.lng}
+              anchor="top"
+              onClose={() => setSelectedLocation(null)}
+              closeButton={false}
+              className="z-50"
+            >
+              <Card className="w-64 p-0 shadow-lg border-none">
+                <div className="relative h-32 w-full">
+                  <img src={selectedLocation.image} alt={selectedLocation.title} className="w-full h-full object-cover rounded-t-xl" />
+                  <Badge className={`absolute top-2 left-2 ${selectedLocation.is_must_see ? "bg-yellow-500 hover:bg-yellow-600" : "bg-blue-500 hover:bg-blue-600"}`}>
+                    {selectedLocation.is_must_see ? "Must See" : "Explore"}
+                  </Badge>
+                </div>
+                <CardContent className="p-3">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <h3 className="font-bold text-sm">{selectedLocation.title}</h3>
+                      <div className="flex items-center text-xs text-muted-foreground">
+                        <Star className="w-3 h-3 text-yellow-500 fill-yellow-500 mr-1" />
+                        {selectedLocation.rating}
+                      </div>
+                    </div>
+                    <span className="font-semibold text-sm">${selectedLocation.cost}</span>
                   </div>
-                  <h3 className="font-display text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                    {dest.name}
-                  </h3>
-                  <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                    {dest.description}
-                  </p>
-                  <Button variant="outline" className="w-full">
-                    Add to Trip
-                  </Button>
+                  <div className="flex gap-2 mt-3">
+                    <Button size="sm" className="w-full text-xs" onClick={() => console.log("Add to itinerary")}>
+                      <Plus className="w-3 h-3 mr-1" /> Add
+                    </Button>
+                    <Button size="sm" variant="outline" className="w-full text-xs">
+                      <Navigation className="w-3 h-3 mr-1" /> Go
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </Popup>
+          )}
+        </Map>
+      </div>
+
+      {/* Sidebar / Overlay for Discovery (Optional List View) */}
+      <div className="hidden lg:block w-80 h-full border-l border-border bg-card p-4 overflow-y-auto">
+        <h2 className="font-display font-bold text-xl mb-4">Discovery</h2>
+        <div className="space-y-3">
+          {MOCK_LOCATIONS.map(loc => (
+            <div
+              key={loc.id}
+              className={`flex gap-3 p-3 rounded-xl border cursor-pointer hover:bg-accent/50 transition-colors ${selectedLocation?.id === loc.id ? 'border-primary bg-accent' : 'border-border'}`}
+              onClick={() => {
+                setSelectedLocation(loc);
+                setViewState(prev => ({ ...prev, latitude: loc.lat, longitude: loc.lng, zoom: 14 }));
+              }}
+            >
+              <div className="w-16 h-16 rounded-lg overflow-hidden shrink-0">
+                <img src={loc.image} className="w-full h-full object-cover" alt={loc.title} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex justify-between items-start">
+                  <h3 className="font-semibold text-sm truncate">{loc.title}</h3>
+                  {loc.is_must_see && <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {loc.is_visited ? "Visited" : loc.is_must_see ? "Must See" : "Recommended"}
+                </p>
+                <div className="flex items-center gap-1 mt-2 text-xs font-medium">
+                  <span className="text-primary">${loc.cost}</span>
+                  <span className="text-muted-foreground mx-1">•</span>
+                  <span>{loc.rating}</span>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {filteredDestinations.length === 0 && (
-            <div className="text-center py-16">
-              <p className="text-muted-foreground">No destinations found. Try a different search.</p>
             </div>
-          )}
+          ))}
         </div>
-      </main>
-
-      <Footer />
+      </div>
     </div>
   );
 };

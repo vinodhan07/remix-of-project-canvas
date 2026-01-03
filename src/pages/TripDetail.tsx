@@ -13,6 +13,7 @@ import {
   PieChart,
   Route,
   Briefcase,
+  Plane,
 } from "lucide-react";
 import destParis from "@/assets/dest-paris.jpg";
 
@@ -76,6 +77,10 @@ const TripDetail = () => {
                   <Button variant="outline" size="sm" className="bg-background/90 hover:bg-background">
                     <Edit className="w-4 h-4 mr-2" />
                     Edit
+                  </Button>
+                  <Button variant="outline" size="sm" className="bg-background/90 hover:bg-background" onClick={() => alert("Downloading PDF Summary...")}>
+                    <Share2 className="w-4 h-4 mr-2" />
+                    Export PDF
                   </Button>
                   <Link to={`/trips/${id}/share`}>
                     <Button variant="ocean" size="sm">
@@ -237,33 +242,69 @@ const TripDetail = () => {
             </Link>
           </div>
 
-          {/* Budget Progress */}
-          <div className="mt-8 bg-card rounded-2xl border border-border p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="font-display text-xl font-semibold text-foreground">
-                Budget Overview
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+            {/* Budget Progress */}
+            <div className="bg-card rounded-2xl border border-border p-6 h-full">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="font-display text-xl font-semibold text-foreground">
+                  Budget Overview
+                </h2>
+                <Link to={`/trips/${id}/budget`} className="text-primary text-sm hover:underline">
+                  View details
+                </Link>
+              </div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-muted-foreground">
+                  ${tripData.spent.toLocaleString()} spent of ${tripData.budget.toLocaleString()}
+                </span>
+                <span className="font-semibold text-foreground">
+                  {((tripData.spent / tripData.budget) * 100).toFixed(0)}%
+                </span>
+              </div>
+              <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+                <div
+                  className="h-full rounded-full gradient-ocean transition-all"
+                  style={{ width: `${(tripData.spent / tripData.budget) * 100}%` }}
+                />
+              </div>
+              <p className="text-sm text-palm mt-2">
+                ${(tripData.budget - tripData.spent).toLocaleString()} remaining
+              </p>
+            </div>
+
+            {/* Return Travel Details */}
+            <div className="bg-card rounded-2xl border border-border p-6 relative overflow-hidden h-full">
+              <div className="absolute top-0 right-0 p-4 opacity-10">
+                <Plane className="w-32 h-32" />
+              </div>
+              <h2 className="font-display text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
+                <Plane className="w-5 h-5 text-primary" />
+                Return Travel Details
               </h2>
-              <Link to={`/trips/${id}/budget`} className="text-primary text-sm hover:underline">
-                View details
-              </Link>
+              <div className="space-y-4 relative z-10">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-background border border-border">
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Flight</p>
+                    <p className="font-bold text-lg">AF 1234</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-muted-foreground">Air France</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-1 p-3 rounded-xl bg-background border border-border">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Depart</p>
+                    <p className="font-bold">Barc. (BCN)</p>
+                    <p className="text-sm text-primary">10:00 AM</p>
+                  </div>
+                  <div className="flex-1 p-3 rounded-xl bg-background border border-border">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Arrive</p>
+                    <p className="font-bold">NY (JFK)</p>
+                    <p className="text-sm text-primary">01:00 PM</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-muted-foreground">
-                ${tripData.spent.toLocaleString()} spent of ${tripData.budget.toLocaleString()}
-              </span>
-              <span className="font-semibold text-foreground">
-                {((tripData.spent / tripData.budget) * 100).toFixed(0)}%
-              </span>
-            </div>
-            <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
-              <div
-                className="h-full rounded-full gradient-ocean transition-all"
-                style={{ width: `${(tripData.spent / tripData.budget) * 100}%` }}
-              />
-            </div>
-            <p className="text-sm text-palm mt-2">
-              ${(tripData.budget - tripData.spent).toLocaleString()} remaining
-            </p>
           </div>
         </div>
       </main>

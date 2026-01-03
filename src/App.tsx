@@ -18,6 +18,7 @@ import ItineraryBuilder from "./pages/ItineraryBuilder";
 import PackingList from "./pages/PackingList";
 import TripDetail from "./pages/TripDetail";
 import NotFound from "./pages/NotFound";
+import DashboardLayout from "@/components/layout/DashboardLayout";
 
 const queryClient = new QueryClient();
 
@@ -32,16 +33,18 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/trips" element={<Trips />} />
-            <Route path="/trips/create" element={<CreateTrip />} />
-            <Route path="/trips/:id" element={<TripDetail />} />
-            <Route path="/trips/:id/budget" element={<TripBudget />} />
-            <Route path="/trips/:id/timeline" element={<TripTimeline />} />
-            <Route path="/trips/:id/share" element={<TripShare />} />
-            <Route path="/trips/:id/itinerary" element={<ItineraryBuilder />} />
-            <Route path="/trips/:id/packing" element={<PackingList />} />
-            <Route path="/explore" element={<Explore />} />
+            <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/trips" element={<Trips />} />
+              <Route path="/trips/create" element={<CreateTrip />} />
+              <Route path="/trips/:id" element={<TripDetail />} />
+              <Route path="/trips/:id/budget" element={<TripBudget />} />
+              <Route path="/trips/:id/timeline" element={<TripTimeline />} />
+              <Route path="/trips/:id/share" element={<TripShare />} />
+              <Route path="/trips/:id/itinerary" element={<ItineraryBuilder />} />
+              <Route path="/trips/:id/packing" element={<PackingList />} />
+              <Route path="/explore" element={<Explore />} />
+            </Route>
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
