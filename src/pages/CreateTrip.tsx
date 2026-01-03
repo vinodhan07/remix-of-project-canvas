@@ -28,29 +28,39 @@ const CreateTrip = () => {
       alert("Please sign in to create a trip.");
       return;
     }
+    if (new Date(formData.startDate) > new Date(formData.endDate)) {
+      alert("End date must be after start date.");
+      return;
+    }
     setLoading(true);
 
     try {
+      // Prepare the payload
+      const payload: any = {
+        user_id: user.id,
+        name: formData.name,
+        start_date: formData.startDate,
+        end_date: formData.endDate,
+        budget_limit: 0,
+      };
+
+      // Only add description if it exists in the form and we assume it might be in the schema
+      // If the schema doesn't have it, this might cause an error, so strictly we should check schema or stick to known columns.
+      // Based on previous comments, description might NOT be in schema. 
+      // payload.description = formData.description; 
+
       const { data, error } = await supabase
         .from('trips')
-        .insert({
-          user_id: user.id,
-          name: formData.name,
-          start_date: formData.startDate,
-          end_date: formData.endDate,
-          // description is not in the schema, we might need to add it or ignore it for now.
-          // schema has: id, user_id, name, start_date, end_date, budget_limit, created_at
-          budget_limit: 0 // Default or form field?
-        })
+        .insert(payload)
         .select()
         .single();
 
       if (error) throw error;
 
       navigate(`/trips/${data.id}/itinerary`);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating trip:", error);
-      alert("Failed to create trip. Please try again.");
+      alert(`Failed to create trip: ${error.message || "Unknown error"}`);
     } finally {
       setLoading(false);
     }

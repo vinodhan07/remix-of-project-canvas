@@ -13,7 +13,7 @@ const destinations = [
     country: "France",
     image: destParis,
     rating: 4.9,
-    avgCost: "$150/day",
+    avgCost: "₹12,750/day",
     featured: true,
   },
   {
@@ -22,7 +22,7 @@ const destinations = [
     country: "Japan",
     image: destTokyo,
     rating: 4.8,
-    avgCost: "$120/day",
+    avgCost: "₹10,200/day",
     featured: false,
   },
   {
@@ -31,7 +31,7 @@ const destinations = [
     country: "Indonesia",
     image: destBali,
     rating: 4.7,
-    avgCost: "$80/day",
+    avgCost: "₹6,800/day",
     featured: false,
   },
   {
@@ -40,7 +40,7 @@ const destinations = [
     country: "Greece",
     image: destSantorini,
     rating: 4.9,
-    avgCost: "$180/day",
+    avgCost: "₹15,300/day",
     featured: true,
   },
 ];
@@ -84,7 +84,7 @@ const DestinationsSection = () => {
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
-                
+
                 {/* Featured Badge */}
                 {dest.featured && (
                   <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-accent text-accent-foreground text-xs font-semibold">

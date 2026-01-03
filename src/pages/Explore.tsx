@@ -122,7 +122,7 @@ const MOCK_RECOMMENDATIONS: LocationItem[] = [
     lng: 2.2945,
     is_must_see: true,
     is_visited: false,
-    cost: 35,
+    cost: 3000,
     rating: 4.8,
     image: CITY_IMAGES["Eiffel Tower"],
     type: "recommendation"
@@ -134,7 +134,7 @@ const MOCK_RECOMMENDATIONS: LocationItem[] = [
     lng: 2.3376,
     is_must_see: true,
     is_visited: true,
-    cost: 22,
+    cost: 1800,
     rating: 4.9,
     image: CITY_IMAGES["Louvre Museum"], // Fixed broken image
     type: "recommendation"
