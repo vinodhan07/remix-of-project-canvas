@@ -10,6 +10,11 @@ import Dashboard from "./pages/Dashboard";
 import Trips from "./pages/Trips";
 import CreateTrip from "./pages/CreateTrip";
 import Explore from "./pages/Explore";
+import TripBudget from "./pages/TripBudget";
+import TripTimeline from "./pages/TripTimeline";
+import TripShare from "./pages/TripShare";
+import ItineraryBuilder from "./pages/ItineraryBuilder";
+import TripDetail from "./pages/TripDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +32,11 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/trips" element={<Trips />} />
           <Route path="/trips/create" element={<CreateTrip />} />
+          <Route path="/trips/:id" element={<TripDetail />} />
+          <Route path="/trips/:id/budget" element={<TripBudget />} />
+          <Route path="/trips/:id/timeline" element={<TripTimeline />} />
+          <Route path="/trips/:id/share" element={<TripShare />} />
+          <Route path="/trips/:id/itinerary" element={<ItineraryBuilder />} />
           <Route path="/explore" element={<Explore />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
