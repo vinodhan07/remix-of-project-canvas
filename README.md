@@ -67,9 +67,9 @@ You can view the initial wireframes and design concepts here:
     ```
 
 ## 👥 Contributors
-* **Team Member 1**
-* **Team Member 2**
-* **Team Member 3**
-* **Faculty Guide**
+* **Vinodhan V A**
+* **Vaishnavi K**
+* **Dharshini K**
+* **Soundharya V**
 
 ---
